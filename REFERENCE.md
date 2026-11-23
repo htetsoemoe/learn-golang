@@ -42,6 +42,37 @@ A `switch` selects a matching `case` and can list multiple values in one case. T
 
 Go variables can be declared with an explicit type using `var`, as in the example's `string`, `int`, and `bool` values. Go also has signed and unsigned integer types, floating-point types (`float32` and `float64`), and complex types (`complex64` and `complex128`).
 
+### Arrays
+
+An array stores a fixed number of elements of one type. Its length is part of its type, and its elements can be accessed by zero-based index. Declare and initialize an array with its length and element type:
+
+```go
+numbers := [3]int{1, 3, 5}
+fmt.Println(numbers[0]) // 1
+```
+
+Use a `for` loop with an index or `for range` to visit its elements. Arrays can also be declared with `var numbers [5]int`; the elements are initialized to the type's zero value.
+
+### Slices
+
+A slice is a flexible view over an underlying array. Unlike an array, a slice's length can grow when elements are appended. Create one with a literal or `make`; `len` reports its current length and `cap` reports how much it can grow before needing a larger underlying array:
+
+```go
+numbers := make([]int, 3, 5) // length 3, capacity 5
+numbers = append(numbers, 10, 20)
+fmt.Println(len(numbers), cap(numbers)) // 5 5
+```
+
+Use a slice expression such as `numbers[1:3]` to get the elements from index 1 up to, but not including, index 3. Slices can be traversed with `for range`.
+
+Assigning one slice to another copies its slice header, so both may refer to the same underlying array. Use the built-in `copy(destination, source)` to copy elements into a separately allocated slice:
+
+```go
+source := []int{10, 20, 30}
+destination := make([]int, len(source))
+copy(destination, source)
+```
+
 ## Functions
 
 ### Basic function
