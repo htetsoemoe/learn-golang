@@ -73,6 +73,46 @@ destination := make([]int, len(source))
 copy(destination, source)
 ```
 
+### Maps
+
+A map stores values under keys. Its type is written `map[KeyType]ValueType`; initialize it with a map literal or `make` before adding entries. A nil map can be read, but assigning to it causes a runtime panic:
+
+```go
+user := map[string]string{
+	"name": "Soe",
+	"city": "Yangon",
+}
+
+user["email"] = "soe@example.com" // add a key
+user["city"] = "Mandalay"        // update a key
+fmt.Println(user["name"])
+
+scores := make(map[string]int)
+scores["Go"] = 10
+delete(scores, "Go")
+```
+
+Use `for range` to iterate over a map. Map iteration order is unspecified:
+
+```go
+for key, value := range user {
+	fmt.Println(key, value)
+}
+```
+
+### Comma-ok idiom
+
+Reading a map key returns its value. To distinguish a missing key from a key holding the value type's zero value, use the two-result form: the second result is `true` when the key exists and `false` otherwise. This pattern is called the comma-ok idiom:
+
+```go
+value, ok := user["name"]
+if ok {
+	fmt.Println("Name:", value)
+} else {
+	fmt.Println("Name not found")
+}
+```
+
 ## Functions
 
 ### Basic function
