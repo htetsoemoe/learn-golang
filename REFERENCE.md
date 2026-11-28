@@ -113,6 +113,50 @@ if ok {
 }
 ```
 
+### Structs
+
+A struct groups named fields, which can have different types. Declare a struct type with `type` and `struct`, then create values with a composite literal. Fields whose names begin with an uppercase letter are exported from the package; lowercase field names are package-private.
+
+```go
+type Person struct {
+	FirstName string
+	LastName  string
+	Age       int
+}
+
+person := Person{
+	FirstName: "John",
+	LastName:  "Doe",
+	Age:       30,
+}
+
+person.Age = 35 // read or update a field with dot notation
+```
+
+### Methods: value and pointer receivers
+
+A method is a function associated with a type through a receiver placed before the method name. A value receiver receives a copy of the value, so assigning to its fields does not update the original struct:
+
+```go
+func (p Person) Greet() {
+	fmt.Printf("Hello, my name is %s and I am %d.\n", p.FirstName, p.Age)
+	p.Age = 99 // changes only the receiver copy
+}
+```
+
+A pointer receiver receives a pointer to the original value, so its field updates are visible to the caller. Use it when a method must modify the receiver or when copying the value is undesirable:
+
+```go
+func (p *Person) SetAge(age int) {
+	p.Age = age
+}
+
+person.Greet()
+person.SetAge(36)
+```
+
+Go automatically takes the address of an addressable value when calling a pointer-receiver method, so `person.SetAge(36)` is shorthand for `(&person).SetAge(36)`. A nil pointer receiver is also possible, but the method must check for nil before dereferencing it.
+
 ## Functions
 
 ### Basic function
